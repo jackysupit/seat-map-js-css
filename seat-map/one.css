@@ -60,7 +60,7 @@ body {
       margin-right: 10px;
       font-weight: bold;
       color: #888;
-      transform: rotate(1deg);
+      /* transform: rotate(1deg); */
       transform-origin: center right;
       width: 40px;
   }
@@ -68,7 +68,7 @@ body {
   .row-labels.right {
     margin-left: 10px;
     margin-right: 0;
-    transform: rotate(-1deg);
+    /* transform: rotate(-1deg); */
     transform-origin: center left;
   }
 
@@ -126,6 +126,10 @@ body {
     transition: background 0.2s ease;
     text-align: center;
     position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;    
   }
 
   .seat.column-placeholder {
@@ -169,7 +173,7 @@ body {
       height: 100%;
       padding-bottom: 6px;
   }
-  .seat-label.top {
+  .seat-label.top, .seat-label.bottom {
       align-items: flex-end;
   }
 
@@ -190,9 +194,4 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-
-
-  #middleBlockColumnBottom {
-    margin-top: 5px;
   }
