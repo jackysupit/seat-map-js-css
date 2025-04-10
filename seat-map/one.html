@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS Seat Map Rotated</title>
+  <link rel="stylesheet" href="one.css">
+</head>
+<body>
+
+  <div class="seat-container">
+    <div class="the-screen">
+        <span class="screen-title">
+            SCREEN
+        </span>
+    </div>
+
+    <!-- Layout with rows and columns -->
+    <div class="seat-layout-wrapper">
+      <!-- Left Row Labels -->
+      <div class="row-labels" id="rowLabelsLeft"></div>
+
+      <!-- Seat Blocks -->
+      <div class="seat-map">
+        <!-- <div class="seat-block middle" id="middleBlockColumnTop"></div> -->
+        <div class="seat-block left" id="leftBlock"></div>
+        <div class="seat-block middle" id="middleBlock"></div>
+        <div class="seat-block right" id="rightBlock"></div>
+        <!-- <div class="seat-block middle" id="middleBlockColumnBottom"></div> -->
+      </div>
+
+      <!-- Right Row Labels -->
+      <div class="row-labels right" id="rowLabelsRight"></div>
+    </div>
+  </div>
+  <script src="one.js" type="text/javascript"></script>
+</body>
+</html>
