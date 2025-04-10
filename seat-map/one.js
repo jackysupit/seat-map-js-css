@@ -34,13 +34,15 @@ const leftCols = allCols.slice(0, leftCount);
 const middleCols = allCols.slice(leftCount, leftCount + middleCount);
 const rightCols = allCols.slice(leftCount + middleCount);
 
-function setGridColumns(id, count) {
+function setGridColumns(id, count, height='50px') {
+  if(!height) height = '50px';
+
   const block = document.getElementById(id);
   if(!block) return;
 
   if (count > 0) {
     block.style.display = "grid";
-    block.style.gridTemplateColumns = `repeat(${count}, 50px)`;
+    block.style.gridTemplateColumns = `repeat(${count}, ${height})`;
   } else {
     block.style.display = "none";
   }
@@ -55,8 +57,8 @@ setGridColumns("middleBlockColumnBottom", middleCount);
 
 function renderSeats(container, cols, blockPosition) {
   if (cols.length === 0) return;
-  debugger;
-  // if (container.id == 'middleBlockColumnTop') {
+
+  if (container.id == 'middleBlockColumnTop') {
     cols.forEach(letter => {
       const seat = document.createElement("div");
       seat.className = "seat placeholder column-placeholder";
@@ -64,7 +66,7 @@ function renderSeats(container, cols, blockPosition) {
       seat.innerHTML = `<div class="seat-label top">${letter}</div>`;
       container.appendChild(seat);
     });
-  // } else if (container.id == 'middleBlock') {
+  } else if (container.id == 'middleBlock') {
     for (let row = 0; row < rows; row++) {
       cols.forEach((col) => {
         const seat = document.createElement("div");
@@ -73,11 +75,12 @@ function renderSeats(container, cols, blockPosition) {
         seat.setAttribute("data-col", col);
         seat.setAttribute("data-row-name", row + 1);
         seat.setAttribute("data-col-name", col);
-        seat.innerHTML = `<div class="seat-label">${col}${row + 1}</div>`;
+        // seat.innerHTML = `<div class="seat-label">${col}${row + 1}</div>`;
+        seat.innerHTML = `<div class="seat-label"></div>`;
         container.appendChild(seat);
       });
     }
-  // } else if (container.id == 'middleBlockColumnTop') {
+  } else if (container.id == 'middleBlockColumnBottom') {
     cols.forEach(letter => {
       const seat = document.createElement("div");
       seat.className = "seat placeholder column-placeholder";
@@ -85,36 +88,35 @@ function renderSeats(container, cols, blockPosition) {
       seat.innerHTML = `<div class="seat-label">${letter}</div>`;
       container.appendChild(seat);
     });
-  // } else {
-  //   return
-  // }
+  } else {
+    return
+  }
 }
 
 function renderRowLabels(container, rotate = 0) {
   container.innerHTML = '';
-  const top = document.createElement("div");
-  top.className = "row-label";
-  container.appendChild(top);
+  // const top = document.createElement("div");
+  // top.className = "row-label";
+  // container.appendChild(top);
 
-  for (let i = 1; i <= rows; i++) {
+  for (let i = 0; i < rows; i++) {
     const label = document.createElement("div");
     label.className = "row-label row-placeholder";
     label.setAttribute("data-row", i);
-    label.textContent = i;
+    label.textContent = i + 1;
     container.appendChild(label);
   }
 
-  const bottom = document.createElement("div");
-  bottom.className = "row-label";
-  container.appendChild(bottom);
+  // const bottom = document.createElement("div");
+  // bottom.className = "row-label";
+  // container.appendChild(bottom);
 }
 
-debugger;
-// renderSeats(document.getElementById("middleBlockColumnTop"), middleCols, 'middle');
+renderSeats(document.getElementById("middleBlockColumnTop"), middleCols, 'middle');
 renderSeats(document.getElementById("leftBlock"), leftCols, 'left');
 renderSeats(document.getElementById("middleBlock"), middleCols, 'middle');
 renderSeats(document.getElementById("rightBlock"), rightCols, 'right');
-// renderSeats(document.getElementById("middleBlockColumnBottom"), middleCols, 'middle');
+renderSeats(document.getElementById("middleBlockColumnBottom"), middleCols, 'middle');
 
 renderRowLabels(document.getElementById("rowLabelsLeft"), 1);
 renderRowLabels(document.getElementById("rowLabelsRight"), -1);
