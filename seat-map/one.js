@@ -59,32 +59,35 @@ function renderSeats(container, cols, blockPosition) {
   if (cols.length === 0) return;
 
   if (container.id == 'middleBlockColumnTop') {
-    cols.forEach(letter => {
+    cols.forEach((letter, index) => {
       const seat = document.createElement("div");
-      seat.className = "seat placeholder column-placeholder";
+      seat.className = "seat empty placeholder column-placeholder";
       seat.setAttribute("data-col", letter);
+      seat.setAttribute("data-col-index", index);
       seat.innerHTML = `<div class="seat-label top">${letter}</div>`;
       container.appendChild(seat);
     });
   } else if (container.id == 'middleBlock') {
     for (let row = 0; row < rows; row++) {
-      cols.forEach((col) => {
+      cols.forEach((letter, index) => {
         const seat = document.createElement("div");
-        seat.className = "seat";
-        seat.setAttribute("data-row", row + 1);
-        seat.setAttribute("data-col", col);
+        seat.className = "seat seat-item empty";
+        seat.setAttribute("data-row-index", row);
+        seat.setAttribute("data-col", letter);
+        seat.setAttribute("data-col-index", index);
         seat.setAttribute("data-row-name", row + 1);
-        seat.setAttribute("data-col-name", col);
-        // seat.innerHTML = `<div class="seat-label">${col}${row + 1}</div>`;
-        seat.innerHTML = `<div class="seat-label"></div>`;
+        seat.setAttribute("data-col-name", letter);
+        // seat.innerHTML = `<div class="seat-label">${letter}${row + 1}</div>`;
+        // seat.innerHTML = `<div class="seat-label"></div>`;
         container.appendChild(seat);
       });
     }
   } else if (container.id == 'middleBlockColumnBottom') {
-    cols.forEach(letter => {
+    cols.forEach((letter, index) => {
       const seat = document.createElement("div");
-      seat.className = "seat placeholder column-placeholder";
+      seat.className = "seat empty placeholder column-placeholder";
       seat.setAttribute("data-col", letter);
+      seat.setAttribute("data-col-index", index);
       seat.innerHTML = `<div class="seat-label bottom">${letter}</div>`;
       container.appendChild(seat);
     });
@@ -98,8 +101,8 @@ function renderRowLabels(container, rotate = 0) {
 
   for (let i = 0; i < rows; i++) {
     const label = document.createElement("div");
-    label.className = "row-label row-placeholder";
-    label.setAttribute("data-row", i);
+    label.className = "seat row-label placeholder row-placeholder";
+    label.setAttribute("data-row-index", i);
     label.textContent = i + 1;
     container.appendChild(label);
   }
@@ -145,7 +148,11 @@ function showContextMenu(e, actions) {
   document.addEventListener("click", () => menu.remove(), { once: true });
 }
 
+
 document.body.addEventListener("contextmenu", (e) => {
+  
+  return; //TEMPORARY 
+
   const seat = e.target.closest(".seat");
   const isColumnPlaceholder = e.target.closest(".column-placeholder");
   const isRowPlaceholder = e.target.closest(".row-placeholder");
@@ -203,14 +210,14 @@ document.body.addEventListener("contextmenu", (e) => {
       }
     ]);
   } else if (isRowPlaceholder) {
-    const row = isRowPlaceholder.getAttribute("data-row");
+    const row = isRowPlaceholder.getAttribute("data-row-index");
     showContextMenu(e, [
       {
         label: "Set Name",
         action: () => {
           const rowName = prompt("Enter row name:");
           if (rowName) {
-            document.querySelectorAll(`.seat[data-row='${row}']`).forEach(seat => {
+            document.querySelectorAll(`.seat[data-row-index='${row}']`).forEach(seat => {
               seat.setAttribute("data-row-name", rowName);
               const colName = seat.getAttribute("data-col-name") || '';
               seat.innerHTML = `<div class='seat-label'>${colName}${rowName}</div>`;
@@ -223,7 +230,7 @@ document.body.addEventListener("contextmenu", (e) => {
         action: () => {
           const url = prompt("Enter image URL:");
           if (url) {
-            document.querySelectorAll(`.seat[data-row='${row}']`).forEach(seat => {
+            document.querySelectorAll(`.seat[data-row-index='${row}']`).forEach(seat => {
               seat.style.backgroundImage = `url(${url})`;
               seat.style.backgroundSize = 'cover';
             });
@@ -236,9 +243,61 @@ document.body.addEventListener("contextmenu", (e) => {
 
 // Click to log seat
 document.body.addEventListener('click', (e) => {
-  if (e.target.classList.contains('seat')) {
-    const row = e.target.getAttribute('data-row');
-    const col = e.target.getAttribute('data-col');
-    console.log(`Row: ${row}, Column: ${col}`);
+  const seat = event.target.closest('.seat');
+  if (seat) {
+    clickSeat(seat)
   }
 });
+
+function clickSeat(seat) {
+  const row = seat.getAttribute('data-row-index');
+  const col = seat.getAttribute('data-col-index');
+  console.log(`Row: ${row}, Column: ${col}`);
+  
+  let seats = [seat];
+  if(seat.classList.contains('column-placeholder')) {
+    seats = document.querySelectorAll(`.seat[data-col-index="${col}"]`)
+  } else if(seat.classList.contains('row-placeholder')) {
+    seats = document.querySelectorAll(`.seat[data-row-index="${row}"]`)
+  }
+
+  if(seat.classList.contains('chosen')) {
+    seats.forEach(el => {
+      unchoose_me(el)
+    });
+  } else {
+    seats.forEach(el => {
+      choose_me(el)
+    });
+  }
+}
+
+function choose_me(seat) {
+  seat.classList.add('chosen')  
+  showLabel(seat)
+}
+
+function showLabel(seat) {
+  let isSeatItem = seat.classList.contains('seat-item')
+  if(!isSeatItem) return;
+
+  let row = seat.getAttribute("data-row-index");
+  row = parseInt(row) + 1
+  let letter = seat.getAttribute("data-col");
+  seat.innerHTML = `<div class="seat-label">${letter}${row}</div>`;  
+}
+
+function hideLabel(seat) {
+  let isSeatItem = seat.classList.contains('seat-item')
+  if(!isSeatItem) return;
+
+  let label = seat.querySelector('.seat-label')
+  if (!label ) return;
+  
+  seat.querySelector('.seat-label').remove()
+}
+
+function unchoose_me(seat) {
+  seat.classList.remove('chosen')
+  hideLabel(seat)
+}
