@@ -191,12 +191,46 @@ body {
   }
 
 
-  /* For debugging visibility */
-.tiny-popup-menu {
-    /* position: absolute; */
-    background-color: white;
-    border: 1px solid #ddd;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    display: block;  /* Ensure it is displayed */
-    z-index: 9999;   /* Make sure it appears on top */
+#middleBlock {
+  position: relative; /* Needed for pseudo-element to position absolutely inside it */
+}
+#middleBlock::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: #ccc;
+
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  pointer-events: none; 
+}
+
+
+
+.seat-map {
+  margin: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.seat-row {
+  display: flex;
+  gap: 8px;
+}
+
+.seat {
+  width: 50px;
+  height: 50px;
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  border: 1px solid #ccc;
 }
