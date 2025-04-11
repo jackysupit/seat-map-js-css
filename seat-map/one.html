@@ -8,24 +8,24 @@
 </head>
 <body>
   <!-- Floating Config Button -->
-  <button id="configButton">Config</button>
+  <button id="config-button">Config</button>
 
   <!-- Config Popup -->
-  <div id="configPopup">
+  <div id="config-popup">
     <h3>Configuration</h3>
     <label>Name</label>
-    <input type="text" id="nameInput" value="Auditorium" />
+    <input type="text" id="config-name" value="Auditorium" />
 
     <label>Default Template</label>
-    <input type="text" id="templateInput" value="{col}-{row}" />
+    <input type="text" id="config-template-label" value="{col}-{row}" />
 
     <label>Dimension</label>
     <div class="dimension-inputs">
-      <input type="number" id="rowInput" placeholder="Row Count" />
-      <input type="number" id="colInput" placeholder="Column Count" />
+      <input type="number" id="config-row-count" placeholder="Row Count" />
+      <input type="number" id="config-col-count" placeholder="Column Count" />
     </div>
 
-    <button id="applyConfig">Apply</button>
+    <button id="submit-config">Apply</button>
   </div>
 
   <!-- Seat Map Container -->

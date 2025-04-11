@@ -1,4 +1,4 @@
-#configButton {
+#config-button {
     position: fixed;
     top: 20px;
     left: 20px;
@@ -12,7 +12,7 @@
     font-weight: bold;
   }
   
-  #configPopup {
+  #config-popup {
     position: fixed;
     top: 60px;
     left: 20px;
@@ -26,18 +26,18 @@
     width: 240px;
   }
   
-  #configPopup h3 {
+  #config-popup h3 {
     margin-top: 0;
   }
   
-  #configPopup label {
+  #config-popup label {
     display: block;
     margin-top: 10px;
     font-size: 14px;
   }
   
-  #configPopup input[type="text"],
-  #configPopup input[type="number"] {
+  #config-popup input[type="text"],
+  #config-popup input[type="number"] {
     width: 100%;
     padding: 6px;
     margin-top: 4px;
@@ -55,7 +55,7 @@
     flex: 1;
   }
   
-  #applyConfig {
+  #submit-config {
     margin-top: 12px;
     width: 100%;
     padding: 8px;
@@ -67,7 +67,7 @@
     cursor: pointer;
   }
 
-  #configPopup {
+  #config-popup {
     position: absolute;
     top: 50px;
     left: 20px;
@@ -80,11 +80,11 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
   
-  #configPopup.show {
+  #config-popup.show {
     display: block;
   }
   
-  #configButton {
+  #config-button {
     position: fixed;
     top: 10px;
     left: 10px;
