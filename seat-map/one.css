@@ -89,6 +89,35 @@ body {
     gap: 6px;
   }
 
+  .sticky-top {
+    position: sticky;
+    top: 0;
+    background: white; /* Optional: to cover what's beneath when sticky */
+    z-index: 10;
+  }
+
+  .sticky-bottom {
+    position: sticky;
+    bottom: 0;
+    background: white; /* Optional: to cover what's beneath when sticky */
+    z-index: 10;
+  }
+
+  .sticky-right {
+    position: sticky;
+    right: 0;
+    background: white; /* Optional: to cover what's beneath when sticky */
+    z-index: 10;
+  }
+
+  .sticky-left {
+    position: sticky;
+    left: 0;
+    background: white; /* Optional: to cover what's beneath when sticky */
+    z-index: 10;
+  }
+
+
   .column-placeholder {
     height: 30px;
   }
@@ -182,7 +211,23 @@ body {
     background: #f0f0f0;
   }
 
-
+  #middleBlock {
+    position: relative; /* Needed for pseudo-element to position absolutely inside it */
+  }
+  
+  #middleBlock::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: #ccc;
+  
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    pointer-events: none; /* Make sure it doesn't interfere with seat clicks */
+  }
 
   .v-flex {
     display: flex;
