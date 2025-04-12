@@ -231,3 +231,38 @@ body {
   font-weight: bold;
   border: 1px solid #ccc;
 }
+
+
+.text-center, .text-center .seat-label {
+  justify-content: center;
+  align-items: center;
+  text-align: center;    
+}
+
+.sticky-top {
+  position: sticky;
+  top: 0;
+  background: white; 
+  z-index: 10;
+}
+
+.sticky-bottom {
+  position: sticky;
+  bottom: 0;
+  background: white; 
+  z-index: 10;
+}
+.sticky-right {
+  position: sticky;
+  right: 0;
+  background: white; 
+  z-index: 10;
+}
+
+.sticky-left {
+  position: sticky;
+  left: 0;
+  background: white; 
+  z-index: 10;
+}
+

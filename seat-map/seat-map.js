@@ -100,7 +100,7 @@ class SeatMap {
       if (container.id == this.colLabelWrapperTop) {
         cols.forEach((letter, index) => {
           const seat = document.createElement("div");
-          seat.className = "seat empty placeholder column-placeholder";
+          seat.className = "seat text-center empty placeholder column-placeholder";
           seat.setAttribute("data-col", letter);
           seat.setAttribute("data-col-index", index);
           seat.innerHTML = `<div class="seat-label top">${letter}</div>`;
@@ -110,7 +110,7 @@ class SeatMap {
         for (let row = 0; row < this.rowCount; row++) {
           cols.forEach((letter, index) => {
             const seat = document.createElement("div");
-            seat.className = "seat seat-item empty";
+            seat.className = "seat text-center seat-item empty";
             seat.setAttribute("data-row-index", row);
             seat.setAttribute("data-col", letter);
             seat.setAttribute("data-col-index", index);
@@ -124,7 +124,7 @@ class SeatMap {
       } else if (container.id == this.colLabelWrapperBottom) {
         cols.forEach((letter, index) => {
           const seat = document.createElement("div");
-          seat.className = "seat empty placeholder column-placeholder";
+          seat.className = "seat text-center empty placeholder column-placeholder";
           seat.setAttribute("data-col", letter);
           seat.setAttribute("data-col-index", index);
           seat.innerHTML = `<div class="seat-label bottom">${letter}</div>`;
@@ -140,7 +140,7 @@ class SeatMap {
 
       for (let i = 0; i < this.rowCount; i++) {
         const label = document.createElement("div");
-        label.className = "seat row-label placeholder row-placeholder";
+        label.className = "seat text-center row-label placeholder row-placeholder";
         label.setAttribute("data-row-index", i);
         label.textContent = i + 1;
         container.appendChild(label);
