@@ -195,10 +195,10 @@ body {
   }
 
 
-#middleBlock {
+#middle-block {
   position: relative; /* Needed for pseudo-element to position absolutely inside it */
 }
-#middleBlock::before {
+#middle-block::before {
   content: '';
   position: absolute;
   top: 0;
