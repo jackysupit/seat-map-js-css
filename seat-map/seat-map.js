@@ -227,6 +227,97 @@ class SeatMap {
       this.hideLabel(seat)
     }
 
+    eventContextMenu(e) {
+  
+      // return; //TEMPORARY 
+    
+      const seat = e.target.closest(".seat");
+      const isColumnPlaceholder = e.target.closest(".column-placeholder");
+      const isRowPlaceholder = e.target.closest(".row-placeholder");
+    
+      if (seat && !isColumnPlaceholder) {
+        this.showContextMenu(e, [
+          {
+            label: "Set Name",
+            action: () => {
+              const name = prompt("Enter seat name:");
+              if (name) {
+                seat.setAttribute("data-seat-name", name);
+                seat.innerHTML = `<div class='seat-label'>${name}</div>`;
+              }
+            }
+          },
+          {
+            label: "Set Background Image",
+            action: () => {
+              const url = prompt("Enter image URL:");
+              if (url) {
+                seat.style.backgroundImage = `url(${url})`;
+                seat.style.backgroundSize = 'cover';
+              }
+            }
+          }
+        ]);
+      } else if (isColumnPlaceholder) {
+        const col = isColumnPlaceholder.getAttribute("data-col");
+        this.showContextMenu(e, [
+          {
+            label: "Set Name",
+            action: () => {
+              const colName = prompt("Enter column name:");
+              if (colName) {
+                document.querySelectorAll(`.seat[data-col='${col}']`).forEach(seat => {
+                  seat.setAttribute("data-col-name", colName);
+                  const rowName = seat.getAttribute("data-row-name") || '';
+                  seat.innerHTML = `<div class='seat-label'>${colName}${rowName}</div>`;
+                });
+              }
+            }
+          },
+          {
+            label: "Set Background Image",
+            action: () => {
+              const url = prompt("Enter image URL:");
+              if (url) {
+                document.querySelectorAll(`.seat[data-col='${col}']`).forEach(seat => {
+                  seat.style.backgroundImage = `url(${url})`;
+                  seat.style.backgroundSize = 'cover';
+                });
+              }
+            }
+          }
+        ]);
+      } else if (isRowPlaceholder) {
+        const row = isRowPlaceholder.getAttribute("data-row-index");
+        this.showContextMenu(e, [
+          {
+            label: "Set Name",
+            action: () => {
+              const rowName = prompt("Enter row name:");
+              if (rowName) {
+                document.querySelectorAll(`.seat[data-row-index='${row}']`).forEach(seat => {
+                  seat.setAttribute("data-row-name", rowName);
+                  const colName = seat.getAttribute("data-col-name") || '';
+                  seat.innerHTML = `<div class='seat-label'>${colName}${rowName}</div>`;
+                });
+              }
+            }
+          },
+          {
+            label: "Set Background Image",
+            action: () => {
+              const url = prompt("Enter image URL:");
+              if (url) {
+                document.querySelectorAll(`.seat[data-row-index='${row}']`).forEach(seat => {
+                  seat.style.backgroundImage = `url(${url})`;
+                  seat.style.backgroundSize = 'cover';
+                });
+              }
+            }
+          }
+        ]);
+      }
+    }    
 }
 
 const myMap = new SeatMap({
@@ -239,112 +330,7 @@ const myMap = new SeatMap({
     rowLabelWrapperRight:'rowLabelWrapperRight'
 })
 
-// setGridColumns("colLabelWrapperTop", colCount);
-// setGridColumns("rowLabelWrapperLeft", leftCount);
-// setGridColumns("middleBlock", colCount);
-// setGridColumns("rowLabelWrapperRight", rightCount);
-// setGridColumns("colLabelWrapperBottom", colCount);
-// renderSeats(document.getElementById("colLabelWrapperTop"), middleCols, 'middle');
-// renderSeats(document.getElementById("rowLabelWrapperLeft"), leftCols, 'left');
-// renderSeats(document.getElementById("middleBlock"), middleCols, 'middle');
-// renderSeats(document.getElementById("rowLabelWrapperRight"), rightCols, 'right');
-// renderSeats(document.getElementById("colLabelWrapperBottom"), middleCols, 'middle');
-
-// renderRowLabels(document.getElementById("rowLabelsLeft"), 1);
-// renderRowLabels(document.getElementById("rowLabelsRight"), -1);
-
-
-document.body.addEventListener("contextmenu", (e) => {
-  
-  return; //TEMPORARY 
-
-  const seat = e.target.closest(".seat");
-  const isColumnPlaceholder = e.target.closest(".column-placeholder");
-  const isRowPlaceholder = e.target.closest(".row-placeholder");
-
-  if (seat && !isColumnPlaceholder) {
-    showContextMenu(e, [
-      {
-        label: "Set Name",
-        action: () => {
-          const name = prompt("Enter seat name:");
-          if (name) {
-            seat.setAttribute("data-seat-name", name);
-            seat.innerHTML = `<div class='seat-label'>${name}</div>`;
-          }
-        }
-      },
-      {
-        label: "Set Background Image",
-        action: () => {
-          const url = prompt("Enter image URL:");
-          if (url) {
-            seat.style.backgroundImage = `url(${url})`;
-            seat.style.backgroundSize = 'cover';
-          }
-        }
-      }
-    ]);
-  } else if (isColumnPlaceholder) {
-    const col = isColumnPlaceholder.getAttribute("data-col");
-    showContextMenu(e, [
-      {
-        label: "Set Name",
-        action: () => {
-          const colName = prompt("Enter column name:");
-          if (colName) {
-            document.querySelectorAll(`.seat[data-col='${col}']`).forEach(seat => {
-              seat.setAttribute("data-col-name", colName);
-              const rowName = seat.getAttribute("data-row-name") || '';
-              seat.innerHTML = `<div class='seat-label'>${colName}${rowName}</div>`;
-            });
-          }
-        }
-      },
-      {
-        label: "Set Background Image",
-        action: () => {
-          const url = prompt("Enter image URL:");
-          if (url) {
-            document.querySelectorAll(`.seat[data-col='${col}']`).forEach(seat => {
-              seat.style.backgroundImage = `url(${url})`;
-              seat.style.backgroundSize = 'cover';
-            });
-          }
-        }
-      }
-    ]);
-  } else if (isRowPlaceholder) {
-    const row = isRowPlaceholder.getAttribute("data-row-index");
-    showContextMenu(e, [
-      {
-        label: "Set Name",
-        action: () => {
-          const rowName = prompt("Enter row name:");
-          if (rowName) {
-            document.querySelectorAll(`.seat[data-row-index='${row}']`).forEach(seat => {
-              seat.setAttribute("data-row-name", rowName);
-              const colName = seat.getAttribute("data-col-name") || '';
-              seat.innerHTML = `<div class='seat-label'>${colName}${rowName}</div>`;
-            });
-          }
-        }
-      },
-      {
-        label: "Set Background Image",
-        action: () => {
-          const url = prompt("Enter image URL:");
-          if (url) {
-            document.querySelectorAll(`.seat[data-row-index='${row}']`).forEach(seat => {
-              seat.style.backgroundImage = `url(${url})`;
-              seat.style.backgroundSize = 'cover';
-            });
-          }
-        }
-      }
-    ]);
-  }
-});
+document.body.addEventListener("contextmenu", (e)=>myMap.eventContextMenu(e));
 
 // Click to log seat
 document.body.addEventListener('click', (e) => {
