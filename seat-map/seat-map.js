@@ -12,12 +12,15 @@ class SeatMap {
     constructor({
         rowCount = 20,
         colCount = 30,
+        labelTemplate = '{col}{row}',
         middleBlock='middle-block', 
         colLabelWrapperTop='colLabelWrapperTop', 
         colLabelWrapperBottom='colLabelWrapperBottom', 
         rowLabelWrapperLeft='rowLabelWrapperLeft', 
         rowLabelWrapperRight='rowLabelWrapperRight'
     }) {
+        this.labelTemplate = labelTemplate
+
         this.middleBlock = middleBlock
         this.colLabelWrapperTop = colLabelWrapperTop
         this.colLabelWrapperBottom = colLabelWrapperBottom
@@ -34,6 +37,7 @@ class SeatMap {
         this.middleCols = this.allCols.slice(this.leftCount, this.leftCount + this.colCount);
         this.rightCols = this.allCols.slice(this.leftCount + this.colCount);
 
+        this.removeAllSeat()
         this.init()
     }
 
@@ -54,6 +58,19 @@ class SeatMap {
         this.renderRowLabels(document.getElementById(this.rowLabelWrapperRight), -1);
 
     }
+
+    removeAllSeat() {
+      var el = document.getElementById(this.middleBlock);
+      if (el) el.innerHTML = '';
+      var el = document.getElementById(this.colLabelWrapperTop);
+      if (el) el.innerHTML = '';
+      var el = document.getElementById(this.colLabelWrapperBottom);
+      if (el) el.innerHTML = '';
+      var el = document.getElementById(this.leftBlock);
+      if (el) el.innerHTML = '';
+      var el = document.getElementById(this.rightBlock);
+      if (el) el.innerHTML = '';
+    }    
 
     // Generate column labels, skipping I, O, Q
     generateColumnLabels(count) {
@@ -103,7 +120,7 @@ class SeatMap {
           seat.className = "seat text-center empty placeholder column-placeholder";
           seat.setAttribute("data-col", letter);
           seat.setAttribute("data-col-index", index);
-          seat.setAttribute("data-label-template", '{col}{row}');
+          seat.setAttribute("data-label-template", this.labelTemplate);
           seat.innerHTML = `<div class="seat-label top">${letter}</div>`;
           container.appendChild(seat);
         });
@@ -117,7 +134,7 @@ class SeatMap {
             seat.setAttribute("data-col-index", index);
             seat.setAttribute("data-row-name", row + 1);
             seat.setAttribute("data-col-name", letter);
-            seat.setAttribute("data-label-template", '{col}{row}');
+            seat.setAttribute("data-label-template", this.labelTemplate);
             // seat.innerHTML = `<div class="seat-label">${letter}${row + 1}</div>`;
             // seat.innerHTML = `<div class="seat-label"></div>`;
             container.appendChild(seat);
@@ -129,7 +146,7 @@ class SeatMap {
           seat.className = "seat text-center empty placeholder column-placeholder";
           seat.setAttribute("data-col", letter);
           seat.setAttribute("data-col-index", index);
-          seat.setAttribute("data-label-template", '{col}{row}');
+          seat.setAttribute("data-label-template", this.labelTemplate);
           seat.innerHTML = `<div class="seat-label bottom">${letter}</div>`;
           container.appendChild(seat);
         });
@@ -346,9 +363,10 @@ class SeatMap {
     }    
 }
 
-const myMap = new SeatMap({
+let myMap = new SeatMap({
     rowCount : 20,
     colCount : 30,
+    labelTemplate: '{col}{row}',
     middleBlock:'middle-block', 
     colLabelWrapperTop:'colLabelWrapperTop', 
     colLabelWrapperBottom:'colLabelWrapperBottom', 

@@ -19,15 +19,22 @@ document.getElementById('submit-config').addEventListener('click', (e) => {
   e.preventDefault();
 
   const name = document.getElementById('config-name').value;
-  const template = document.getElementById('config-template-label').value;
+  const labelTemplate = document.getElementById('config-label-template').value;
   const rowCount = parseInt(document.getElementById('config-row-count').value) || 20;
 
   const colCount = parseInt(document.getElementById('config-col-count').value) || 30;
 
-  console.log({ name, template, rowCount, colCount });
+  console.log({ name, labelTemplate, rowCount, colCount });
 
-  // TODO: call regenerateSeatMap(rowCount, colCount)
-
-  // Close popup
+  myMap = new SeatMap({
+      rowCount : rowCount ||  20,
+      colCount : colCount ||  30,
+      labelTemplate:  labelTemplate || '{col}{row}',
+      middleBlock:'middle-block', 
+      colLabelWrapperTop:'colLabelWrapperTop', 
+      colLabelWrapperBottom:'colLabelWrapperBottom', 
+      rowLabelWrapperLeft:'rowLabelWrapperLeft', 
+      rowLabelWrapperRight:'rowLabelWrapperRight'
+  })
   configPopup.classList.remove('show');
 });
