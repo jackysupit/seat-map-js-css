@@ -103,6 +103,7 @@ class SeatMap {
           seat.className = "seat text-center empty placeholder column-placeholder";
           seat.setAttribute("data-col", letter);
           seat.setAttribute("data-col-index", index);
+          seat.setAttribute("data-label-template", '{col}{row}');
           seat.innerHTML = `<div class="seat-label top">${letter}</div>`;
           container.appendChild(seat);
         });
@@ -116,6 +117,7 @@ class SeatMap {
             seat.setAttribute("data-col-index", index);
             seat.setAttribute("data-row-name", row + 1);
             seat.setAttribute("data-col-name", letter);
+            seat.setAttribute("data-label-template", '{col}{row}');
             // seat.innerHTML = `<div class="seat-label">${letter}${row + 1}</div>`;
             // seat.innerHTML = `<div class="seat-label"></div>`;
             container.appendChild(seat);
@@ -127,6 +129,7 @@ class SeatMap {
           seat.className = "seat text-center empty placeholder column-placeholder";
           seat.setAttribute("data-col", letter);
           seat.setAttribute("data-col-index", index);
+          seat.setAttribute("data-label-template", '{col}{row}');
           seat.innerHTML = `<div class="seat-label bottom">${letter}</div>`;
           container.appendChild(seat);
         });
@@ -151,6 +154,11 @@ class SeatMap {
     // Right-click context menu actions
     showContextMenu(e, actions) {
       e.preventDefault();
+
+      // Remove any existing context menus
+      const existing = document.querySelector('.custom-context-menu');
+      if (existing) existing.remove();
+
       const menu = document.createElement("div");
       menu.className = "custom-context-menu";
       menu.style.position = "absolute";
@@ -244,46 +252,27 @@ class SeatMap {
     eventContextMenu(e) {
   
       // return; //TEMPORARY 
+
+      let seat = e.target.closest(".seat");
+
+      let isColumnPlaceholder = false;
+      let isRowPlaceholder = false;
+      if(seat) {
+        isColumnPlaceholder = seat.classList.contains("column-placeholder");
+        isRowPlaceholder = seat.classList.contains("row-placeholder");
+      }
     
-      const seat = e.target.closest(".seat");
-      const isColumnPlaceholder = e.target.closest(".column-placeholder");
-      const isRowPlaceholder = e.target.closest(".row-placeholder");
-    
-      if (seat && !isColumnPlaceholder) {
-        this.showContextMenu(e, [
-          {
-            label: "Set Name",
-            action: () => {
-              const name = prompt("Enter seat name:");
-              if (name) {
-                seat.setAttribute("data-seat-name", name);
-                seat.innerHTML = `<div class='seat-label'>${name}</div>`;
-              }
-            }
-          },
-          {
-            label: "Set Background Image",
-            action: () => {
-              const url = prompt("Enter image URL:");
-              if (url) {
-                seat.style.backgroundImage = `url(${url})`;
-                seat.style.backgroundSize = 'cover';
-              }
-            }
-          }
-        ]);
-      } else if (isColumnPlaceholder) {
-        const col = isColumnPlaceholder.getAttribute("data-col");
+      if (isColumnPlaceholder) {
+        const col = seat.getAttribute("data-col");
         this.showContextMenu(e, [
           {
             label: "Set Name",
             action: () => {
               const colName = prompt("Enter column name:");
               if (colName) {
-                document.querySelectorAll(`.seat[data-col='${col}']`).forEach(seat => {
-                  seat.setAttribute("data-col-name", colName);
-                  const rowName = seat.getAttribute("data-row-name") || '';
-                  seat.innerHTML = `<div class='seat-label'>${colName}${rowName}</div>`;
+                document.querySelectorAll(`.seat[data-col='${col}']`).forEach(one => {
+                  one.setAttribute("data-label-template", colName);
+                  this.showLabel(one)
                 });
               }
             }
@@ -293,44 +282,67 @@ class SeatMap {
             action: () => {
               const url = prompt("Enter image URL:");
               if (url) {
-                document.querySelectorAll(`.seat[data-col='${col}']`).forEach(seat => {
-                  seat.style.backgroundImage = `url(${url})`;
-                  seat.style.backgroundSize = 'cover';
+                document.querySelectorAll(`.seat[data-col='${col}']`).forEach(one => {
+                  one.style.backgroundImage = `url(${url})`;
+                  one.style.backgroundSize = 'cover';
                 });
               }
             }
           }
         ]);
       } else if (isRowPlaceholder) {
-        const row = isRowPlaceholder.getAttribute("data-row-index");
+        const row = seat.getAttribute("data-row-index");
         this.showContextMenu(e, [
-          {
-            label: "Set Name",
-            action: () => {
-              const rowName = prompt("Enter row name:");
-              if (rowName) {
-                document.querySelectorAll(`.seat[data-row-index='${row}']`).forEach(seat => {
-                  seat.setAttribute("data-row-name", rowName);
-                  const colName = seat.getAttribute("data-col-name") || '';
-                  seat.innerHTML = `<div class='seat-label'>${colName}${rowName}</div>`;
-                });
-              }
-            }
-          },
+          // {
+          //   label: "Set Name",
+          //   action: () => {
+          //     const rowName = prompt("Enter row name:");
+          //     if (rowName) {
+          //       document.querySelectorAll(`.seat[data-row-index='${row}']`).forEach(seat => {
+          //         seat.setAttribute("data-row-name", rowName);
+          //         const colName = seat.getAttribute("data-col-name") || '';
+          //         seat.innerHTML = `<div class='seat-label'>${colName}${rowName}</div>`;
+          //       });
+          //     }
+          //   }
+          // },
           {
             label: "Set Background Image",
             action: () => {
               const url = prompt("Enter image URL:");
               if (url) {
-                document.querySelectorAll(`.seat[data-row-index='${row}']`).forEach(seat => {
-                  seat.style.backgroundImage = `url(${url})`;
-                  seat.style.backgroundSize = 'cover';
+                document.querySelectorAll(`.seat[data-row-index='${row}']`).forEach(one => {
+                  one.style.backgroundImage = `url(${url})`;
+                  one.style.backgroundSize = 'cover';
                 });
               }
             }
           }
         ]);
-      }
+      } else if (seat) {
+        this.showContextMenu(e, [
+            {
+              label: "Set Name",
+              action: () => {
+                const colName = prompt("Enter seat name:");
+                if (colName) {
+                  seat.setAttribute("data-label-template", colName);
+                  this.showLabel(seat)
+                }
+              }
+            },
+            {
+              label: "Set Background Image",
+              action: () => {
+                const url = prompt("Enter image URL:");
+                if (url) {
+                  seat.style.backgroundImage = `url(${url})`;
+                  seat.style.backgroundSize = 'cover';
+                }
+              }
+            }
+          ]);
+      }    
     }    
 }
 
