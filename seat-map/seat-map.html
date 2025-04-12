@@ -8,7 +8,12 @@
 </head>
 <body>
   <!-- Floating Config Button -->
-  <button id="config-button">Config</button>
+  <div class="seatmap-controls-wrapper align-left">
+    <div class="seatmap-controls">
+      <button id="config-button">Config</button>
+      <button id="submit-seats">Submit</button>
+    </div>
+  </div>
 
   <!-- Config Popup -->
   <div id="config-popup">
@@ -25,9 +30,12 @@
       <input type="number" id="config-col-count" placeholder="Column Count" value="30"/>
     </div>
 
+
     <button id="submit-config">Apply</button>
   </div>
 
+
+  
   <!-- Seat Map Container -->
   <div id="seatMapContainer"></div>
 
