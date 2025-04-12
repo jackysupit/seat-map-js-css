@@ -205,17 +205,31 @@ class SeatMap {
     showLabel(seat) {
       let isSeatItem = seat.classList.contains('seat-item')
       if(!isSeatItem) return;
-
-      let row = seat.getAttribute("data-row-index");
-      row = parseInt(row) + 1
-      let letter = seat.getAttribute("data-col");
-      seat.innerHTML = `<div class="seat-label">${letter}${row}</div>`;  
+    
+      let isChosen = seat.classList.contains('chosen')
+      if(!isChosen) return;
+    
+      let row_index = seat.getAttribute("data-row-index");
+      let row = parseInt(row_index) + 1;
+    
+      let col_index = seat.getAttribute("data-col-index");
+      col_index = parseInt(col_index)
+    
+      let col_name = seat.getAttribute("data-col-name");
+      let template = seat.getAttribute("data-label-template");
+      let label = template
+      label = (label+'').replaceAll('{row}', row)
+      label = (label+'').replaceAll('{ROW}', row)
+      label = (label+'').replaceAll('{col}', col_name)
+      label = (label+'').replaceAll('{COL}', col_name)
+      
+      seat.innerHTML = `<div class="seat-label">${label}</div>`;  
     }
-
+    
     hideLabel(seat) {
       let isSeatItem = seat.classList.contains('seat-item')
       if(!isSeatItem) return;
-
+    
       let label = seat.querySelector('.seat-label')
       if (!label ) return;
       
