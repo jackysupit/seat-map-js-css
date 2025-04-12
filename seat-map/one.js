@@ -48,13 +48,6 @@ function setGridColumns(id, count, height='50px') {
   }
 }
 
-setGridColumns("middleBlockColumnTop", middleCount);
-setGridColumns("leftBlock", leftCount);
-setGridColumns("middleBlock", middleCount);
-setGridColumns("rightBlock", rightCount);
-setGridColumns("middleBlockColumnBottom", middleCount);
-
-
 function renderSeats(container, cols, blockPosition) {
   if (cols.length === 0) return;
 
@@ -109,19 +102,6 @@ function renderRowLabels(container, rotate = 0) {
 
 }
 
-renderSeats(document.getElementById("middleBlockColumnTop"), middleCols, 'middle');
-renderSeats(document.getElementById("leftBlock"), leftCols, 'left');
-renderSeats(document.getElementById("middleBlock"), middleCols, 'middle');
-renderSeats(document.getElementById("rightBlock"), rightCols, 'right');
-renderSeats(document.getElementById("middleBlockColumnBottom"), middleCols, 'middle');
-
-renderRowLabels(document.getElementById("rowLabelsLeft"), 1);
-renderRowLabels(document.getElementById("rowLabelsRight"), -1);
-
-// Center screen title dynamically
-const screen = document.querySelector(".the-screen");
-const screenTitle = document.querySelector(".screen-title");
-
 // Right-click context menu actions
 function showContextMenu(e, actions) {
   e.preventDefault();
@@ -147,6 +127,74 @@ function showContextMenu(e, actions) {
   document.body.appendChild(menu);
   document.addEventListener("click", () => menu.remove(), { once: true });
 }
+
+
+function clickSeat(seat) {
+  const row = seat.getAttribute('data-row-index');
+  const col = seat.getAttribute('data-col-index');
+  console.log(`Row: ${row}, Column: ${col}`);
+  
+  let seats = [seat];
+  if(seat.classList.contains('column-placeholder')) {
+    seats = document.querySelectorAll(`.seat[data-col-index="${col}"]`)
+  } else if(seat.classList.contains('row-placeholder')) {
+    seats = document.querySelectorAll(`.seat[data-row-index="${row}"]`)
+  }
+
+  if(seat.classList.contains('chosen')) {
+    seats.forEach(el => {
+      unchoose_me(el)
+    });
+  } else {
+    seats.forEach(el => {
+      choose_me(el)
+    });
+  }
+}
+
+function choose_me(seat) {
+  seat.classList.add('chosen')  
+  showLabel(seat)
+}
+
+function showLabel(seat) {
+  let isSeatItem = seat.classList.contains('seat-item')
+  if(!isSeatItem) return;
+
+  let row = seat.getAttribute("data-row-index");
+  row = parseInt(row) + 1
+  let letter = seat.getAttribute("data-col");
+  seat.innerHTML = `<div class="seat-label">${letter}${row}</div>`;  
+}
+
+function hideLabel(seat) {
+  let isSeatItem = seat.classList.contains('seat-item')
+  if(!isSeatItem) return;
+
+  let label = seat.querySelector('.seat-label')
+  if (!label ) return;
+  
+  seat.querySelector('.seat-label').remove()
+}
+
+function unchoose_me(seat) {
+  seat.classList.remove('chosen')
+  hideLabel(seat)
+}
+
+setGridColumns("middleBlockColumnTop", middleCount);
+setGridColumns("leftBlock", leftCount);
+setGridColumns("middleBlock", middleCount);
+setGridColumns("rightBlock", rightCount);
+setGridColumns("middleBlockColumnBottom", middleCount);
+renderSeats(document.getElementById("middleBlockColumnTop"), middleCols, 'middle');
+renderSeats(document.getElementById("leftBlock"), leftCols, 'left');
+renderSeats(document.getElementById("middleBlock"), middleCols, 'middle');
+renderSeats(document.getElementById("rightBlock"), rightCols, 'right');
+renderSeats(document.getElementById("middleBlockColumnBottom"), middleCols, 'middle');
+
+renderRowLabels(document.getElementById("rowLabelsLeft"), 1);
+renderRowLabels(document.getElementById("rowLabelsRight"), -1);
 
 
 document.body.addEventListener("contextmenu", (e) => {
@@ -248,56 +296,3 @@ document.body.addEventListener('click', (e) => {
     clickSeat(seat)
   }
 });
-
-function clickSeat(seat) {
-  const row = seat.getAttribute('data-row-index');
-  const col = seat.getAttribute('data-col-index');
-  console.log(`Row: ${row}, Column: ${col}`);
-  
-  let seats = [seat];
-  if(seat.classList.contains('column-placeholder')) {
-    seats = document.querySelectorAll(`.seat[data-col-index="${col}"]`)
-  } else if(seat.classList.contains('row-placeholder')) {
-    seats = document.querySelectorAll(`.seat[data-row-index="${row}"]`)
-  }
-
-  if(seat.classList.contains('chosen')) {
-    seats.forEach(el => {
-      unchoose_me(el)
-    });
-  } else {
-    seats.forEach(el => {
-      choose_me(el)
-    });
-  }
-}
-
-function choose_me(seat) {
-  seat.classList.add('chosen')  
-  showLabel(seat)
-}
-
-function showLabel(seat) {
-  let isSeatItem = seat.classList.contains('seat-item')
-  if(!isSeatItem) return;
-
-  let row = seat.getAttribute("data-row-index");
-  row = parseInt(row) + 1
-  let letter = seat.getAttribute("data-col");
-  seat.innerHTML = `<div class="seat-label">${letter}${row}</div>`;  
-}
-
-function hideLabel(seat) {
-  let isSeatItem = seat.classList.contains('seat-item')
-  if(!isSeatItem) return;
-
-  let label = seat.querySelector('.seat-label')
-  if (!label ) return;
-  
-  seat.querySelector('.seat-label').remove()
-}
-
-function unchoose_me(seat) {
-  seat.classList.remove('chosen')
-  hideLabel(seat)
-}
