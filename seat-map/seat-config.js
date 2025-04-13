@@ -6,15 +6,18 @@ class MyMapConfig {
     configButton = 'config-button',
     configPopup = 'config-popup',
     configSubmit = 'submit-config',
+    submitSeats = 'submit-seats',
   }) {
     this.myMap = myMap
     this.configButton = configButton
     this.configPopup = configPopup
     this.configSubmit = configSubmit
+    this.submitSeats = submitSeats
 
     this.elConfigButton = document.getElementById(configButton);
     this.elConfigPopup = document.getElementById(configPopup);
     this.elConfigSubmit = document.getElementById(configSubmit);
+    this.elSubmitSeats = document.getElementById(submitSeats);
 
     if(!MyMapConfig._is_listening) {
       this.listen()
@@ -23,14 +26,14 @@ class MyMapConfig {
 
   submit() {
     const result = {
-        id: this.elConfigPopup.getElementById('config-id').value,
-        name: this.elConfigPopup.getElementById('config-name').value,
-        default_label_template: this.elConfigPopup.getElementById('config-label-template').value,
-        row_count: parseInt(this.elConfigPopup.getElementById('config-row-count').value),
-        col_count: parseInt(this.elConfigPopup.getElementById('config-col-count').value),
+        id: this.elConfigPopup.querySelector('#config-id').value,
+        name: this.elConfigPopup.querySelector('#config-name').value,
+        default_label_template: this.elConfigPopup.querySelector('#config-label-template').value,
+        row_count: parseInt(this.elConfigPopup.querySelector('#config-row-count').value),
+        col_count: parseInt(this.elConfigPopup.querySelector('#config-col-count').value),
         chosen: []
       };
-    this.elConfigPopup.querySelectorAll('.seat.chosen').forEach(seat => {
+      this.myMap.chosen().forEach(seat => {
         const rowIndex = parseInt(seat.getAttribute('data-row-index'));
         const colIndex = parseInt(seat.getAttribute('data-col-index'));
         const labelTemplate = seat.getAttribute('data-label-template');
@@ -41,18 +44,18 @@ class MyMapConfig {
         .replace('{row}', rowIndex + 1);
     
         result.chosen.push({
-        row_index: rowIndex,
-        col_index: colIndex,
-        label_template: labelTemplate,
-        label: label
+            row_index: rowIndex,
+            col_index: colIndex,
+            label_template: labelTemplate,
+            label: label
         });
     })
 
-    fetch('/api/seat-map/save', {
+    fetch('http://localhost:8080/api/seat-map/save-sudo', {
         method: 'POST',
-        headers: {
-        'Content-Type': 'application/json'
-        },
+        // headers: {
+        // 'Content-Type': 'application/json'
+        // },
         body: JSON.stringify(result)
     })
     .then(res => res.json())
@@ -70,6 +73,7 @@ class MyMapConfig {
     document.body.addEventListener('click', (e) => {
         const clickedInsidePopup = this.elConfigPopup.contains(e.target);
         const clickedConfigButton = this.elConfigButton.contains(e.target);
+        const clickSubmit = this.elSubmitSeats.contains(e.target);
       
         if (clickedConfigButton) {
           e.stopPropagation();
@@ -82,8 +86,7 @@ class MyMapConfig {
           this.elConfigPopup.classList.remove('show');
         }
       
-        const isConfigSubmit = e.target.classList.contains(this.configSubmit);
-        if (isConfigSubmit) {
+        if (clickSubmit) {
             e.preventDefault();
             this.submit()
             return          
