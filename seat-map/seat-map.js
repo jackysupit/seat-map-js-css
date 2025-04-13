@@ -312,9 +312,11 @@ class SeatMap {
 
       let isColumnPlaceholder = false;
       let isRowPlaceholder = false;
+      let isSeatItem = false;
       if(seat) {
         isColumnPlaceholder = seat.classList.contains("column-placeholder");
         isRowPlaceholder = seat.classList.contains("row-placeholder");
+        isSeatItem = seat.classList.contains("seat-item");
       }
     
       if (isColumnPlaceholder) {
@@ -323,7 +325,7 @@ class SeatMap {
           {
             label: "Set Name",
             action: () => {
-              const colName = prompt("Enter column name:");
+              const colName = prompt("Enter column name. {col} = Column, {row} = Row Number");
               if (colName) {
                 document.querySelectorAll(`.seat[data-col='${col}']`).forEach(one => {
                   one.setAttribute("data-label-template", colName);
@@ -332,22 +334,22 @@ class SeatMap {
               }
             }
           },
-          {
-            label: "Set Background Image",
-            action: () => {
-              const url = prompt("Enter image URL:");
-              if (url) {
-                document.querySelectorAll(`.seat[data-col='${col}']`).forEach(one => {
-                  one.style.backgroundImage = `url(${url})`;
-                  one.style.backgroundSize = 'cover';
-                });
-              }
-            }
-          }
+          // {
+          //   label: "Set Background Image",
+          //   action: () => {
+          //     const url = prompt("Enter image URL:");
+          //     if (url) {
+          //       document.querySelectorAll(`.seat[data-col='${col}']`).forEach(one => {
+          //         one.style.backgroundImage = `url(${url})`;
+          //         one.style.backgroundSize = 'cover';
+          //       });
+          //     }
+          //   }
+          // }
         ]);
-      } else if (isRowPlaceholder) {
-        const row = seat.getAttribute("data-row-index");
-        this.showContextMenu(e, [
+      // } else if (isRowPlaceholder) {
+      //   const row = seat.getAttribute("data-row-index");
+      //   this.showContextMenu(e, [
           // {
           //   label: "Set Name",
           //   action: () => {
@@ -361,20 +363,20 @@ class SeatMap {
           //     }
           //   }
           // },
-          {
-            label: "Set Background Image",
-            action: () => {
-              const url = prompt("Enter image URL:");
-              if (url) {
-                document.querySelectorAll(`.seat[data-row-index='${row}']`).forEach(one => {
-                  one.style.backgroundImage = `url(${url})`;
-                  one.style.backgroundSize = 'cover';
-                });
-              }
-            }
-          }
-        ]);
-      } else if (seat) {
+          // {
+          //   label: "Set Background Image",
+          //   action: () => {
+          //     const url = prompt("Enter image URL:");
+          //     if (url) {
+          //       document.querySelectorAll(`.seat[data-row-index='${row}']`).forEach(one => {
+          //         one.style.backgroundImage = `url(${url})`;
+          //         one.style.backgroundSize = 'cover';
+          //       });
+          //     }
+          //   }
+          // }
+        // ]);
+      } else if (isSeatItem) {
         this.showContextMenu(e, [
             {
               label: "Set Name",
@@ -386,16 +388,16 @@ class SeatMap {
                 }
               }
             },
-            {
-              label: "Set Background Image",
-              action: () => {
-                const url = prompt("Enter image URL:");
-                if (url) {
-                  seat.style.backgroundImage = `url(${url})`;
-                  seat.style.backgroundSize = 'cover';
-                }
-              }
-            }
+            // {
+            //   label: "Set Background Image",
+            //   action: () => {
+            //     const url = prompt("Enter image URL:");
+            //     if (url) {
+            //       seat.style.backgroundImage = `url(${url})`;
+            //       seat.style.backgroundSize = 'cover';
+            //     }
+            //   }
+            // }
           ]);
       }    
     }    

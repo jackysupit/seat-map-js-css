@@ -1,9 +1,12 @@
 .seatmap-controls-wrapper {
-  width: 100%;
+  position: fixed;      /* 🔥 makes it fixed to the viewport */
+  top: 7px;            /* distance from the top of the screen */
+  right: 0;          /* distance from the right of the screen */
+  z-index: 1000;        /* keep it above other elements */
   display: flex;
-  justify-content: center; /* <-- center by default */
-  margin-top: 10px;
+  gap: 10px;
 }
+
 
 .seatmap-controls {
   display: flex;
