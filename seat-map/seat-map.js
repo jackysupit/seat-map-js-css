@@ -8,27 +8,49 @@
 // const middleCols = allCols.slice(leftCount, leftCount + colCount);
 // const rightCols = allCols.slice(leftCount + colCount);
 class SeatMap {
-    
+    static _listening = false; // static to persist across instances
+
     constructor({
-        rowCount = 20,
-        colCount = 30,
-        labelTemplate = '{col}{row}',
-        middleBlock='middle-block', 
-        colLabelWrapperTop='colLabelWrapperTop', 
-        colLabelWrapperBottom='colLabelWrapperBottom', 
-        rowLabelWrapperLeft='rowLabelWrapperLeft', 
-        rowLabelWrapperRight='rowLabelWrapperRight'
+      rowCount = 20,
+      colCount = 30,
+      labelTemplate = '{col}{row}',
+      middleBlock='middle-block', 
+      colLabelWrapperTop='colLabelWrapperTop', 
+      colLabelWrapperBottom='colLabelWrapperBottom', 
+      rowLabelWrapperLeft='rowLabelWrapperLeft', 
+      rowLabelWrapperRight='rowLabelWrapperRight'
     }) {
-        this.labelTemplate = labelTemplate
+      this.reDraw({
+        rowCount: rowCount,
+        colCount: colCount,
+        labelTemplate: labelTemplate,
+        middleBlock: middleBlock,
+        colLabelWrapperTop: colLabelWrapperTop,
+        colLabelWrapperBottom: colLabelWrapperBottom,
+        rowLabelWrapperLeft: rowLabelWrapperLeft,
+        rowLabelWrapperRight: rowLabelWrapperRight,
+      })
+    }
 
-        this.middleBlock = middleBlock
-        this.colLabelWrapperTop = colLabelWrapperTop
-        this.colLabelWrapperBottom = colLabelWrapperBottom
-        this.rowLabelWrapperLeft = rowLabelWrapperLeft
-        this.rowLabelWrapperRight = rowLabelWrapperRight
-
-        this.rowCount = rowCount;
-        this.colCount = colCount;
+    reDraw({
+        rowCount,
+        colCount,
+        labelTemplate,
+        middleBlock,
+        colLabelWrapperTop,
+        colLabelWrapperBottom,
+        rowLabelWrapperLeft,
+        rowLabelWrapperRight,
+    }) {
+      
+        this.rowCount = rowCount ? rowCount : this.rowCount;
+        this.colCount = colCount ? colCount : this.colCount;
+        this.labelTemplate = labelTemplate ? labelTemplate : this.labelTemplate;
+        this.middleBlock = middleBlock ? middleBlock : this.middleBlock;
+        this.colLabelWrapperTop = colLabelWrapperTop ? colLabelWrapperTop : this.colLabelWrapperTop;
+        this.colLabelWrapperBottom = colLabelWrapperBottom ? colLabelWrapperBottom : this.colLabelWrapperBottom;
+        this.rowLabelWrapperLeft = rowLabelWrapperLeft ? rowLabelWrapperLeft : this.rowLabelWrapperLeft;
+        this.rowLabelWrapperRight = rowLabelWrapperRight ? rowLabelWrapperRight : this.rowLabelWrapperRight;
 
         this.leftCount = 0;
         this.rightCount = 0;
@@ -39,8 +61,24 @@ class SeatMap {
 
         this.removeAllSeat()
         this.init()
-    }
 
+
+        if (!SeatMap._listening) {
+          this.listen();
+          SeatMap._listening = true;
+        }        
+    }
+    listen() {
+      document.body.addEventListener("contextmenu", (e)=>this.eventContextMenu(e));
+
+      // Click to log seat
+      document.body.addEventListener('click', (e) => {
+        const seat = e.target.closest('.seat');
+        if (seat) {
+          this.clickSeat(seat)
+        }
+      });      
+    }
     init() {
         this.setGridColumns(this.middleBlock, this.colCount);
         this.setGridColumns(this.colLabelWrapperTop, this.colCount);
@@ -363,23 +401,3 @@ class SeatMap {
     }    
 }
 
-let myMap = new SeatMap({
-    rowCount : 20,
-    colCount : 30,
-    labelTemplate: '{col}{row}',
-    middleBlock:'middle-block', 
-    colLabelWrapperTop:'colLabelWrapperTop', 
-    colLabelWrapperBottom:'colLabelWrapperBottom', 
-    rowLabelWrapperLeft:'rowLabelWrapperLeft', 
-    rowLabelWrapperRight:'rowLabelWrapperRight'
-})
-
-document.body.addEventListener("contextmenu", (e)=>myMap.eventContextMenu(e));
-
-// Click to log seat
-document.body.addEventListener('click', (e) => {
-  const seat = event.target.closest('.seat');
-  if (seat) {
-    myMap.clickSeat(seat)
-  }
-});

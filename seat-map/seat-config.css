@@ -19,6 +19,10 @@
   justify-content: flex-end;
   margin-right: 10px;
 }
+.seatmap-controls-wrapper.align-right .config-popup {
+  left: auto;
+  right: 0;
+}
 
 .seatmap-controls button {
   padding: 8px 12px;
@@ -34,63 +38,19 @@
   background-color: #0056b3;
 }
 
-
-/* 
-#config-button {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 1000;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-  } */
-  
-  #config-popup {
-    position: fixed;
-    top: 60px;
-    left: 20px;
-    background: white;
-    border: 1px solid #ccc;
-    padding: 20px;
-    z-index: 999;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    border-radius: 8px;
-    display: none;
-    width: 240px;
-  }
-  
-  #config-popup h3 {
+  .config-popup h3 {
     margin-top: 0;
   }
   
-  #config-popup label {
+  .config-popup label {
     display: block;
     margin-top: 10px;
     font-size: 14px;
   }
   
-  #config-popup input[type="text"],
-  #config-popup input[type="number"] {
-    width: 100%;
-    padding: 6px;
-    margin-top: 4px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-  }
-  
   .dimension-inputs {
     display: flex;
     gap: 8px;
-  }
-  
-  .dimension-inputs input {
-    flex: 1;
   }
   
   #submit-config {
@@ -105,32 +65,24 @@
     cursor: pointer;
   }
 
-  #config-popup {
-    position: absolute;
-    top: 50px;
-    left: 20px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 20px;
-    display: none;
-    z-index: 999;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+  .config-container {
+    position: relative;
   }
   
-  #config-popup.show {
+  .config-popup {
+    min-width: 320px;
+    position: absolute;
+    top: 100%; /* below the button */
+    left: 0;
+    margin-top: 5px;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 999;
+    display: none;
+  }
+
+  .config-popup.show {
     display: block;
   }
-/*   
-  #config-button {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 1000;
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-  } */

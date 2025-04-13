@@ -159,7 +159,7 @@ body {
   }
 
   .row-placeholder:hover, .column-placeholder:hover, .seat.column-placeholder:hover, .seat.placeholder:hover {
-    background-color: #ffe6ff;
+    background-color: #fab9fa;
     cursor: pointer;
   }
 
