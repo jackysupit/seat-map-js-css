@@ -21,8 +21,52 @@ class MyMapConfig {
     }
   }
 
+  submit() {
+    const result = {
+        id: this.elConfigPopup.getElementById('config-id').value,
+        name: this.elConfigPopup.getElementById('config-name').value,
+        default_label_template: this.elConfigPopup.getElementById('config-label-template').value,
+        row_count: parseInt(this.elConfigPopup.getElementById('config-row-count').value),
+        col_count: parseInt(this.elConfigPopup.getElementById('config-col-count').value),
+        chosen: []
+      };
+    this.elConfigPopup.querySelectorAll('.seat.chosen').forEach(seat => {
+        const rowIndex = parseInt(seat.getAttribute('data-row-index'));
+        const colIndex = parseInt(seat.getAttribute('data-col-index'));
+        const labelTemplate = seat.getAttribute('data-label-template');
+        const colName = seat.getAttribute('data-col-name');
+    
+        const label = labelTemplate
+        .replace('{col}', colName)
+        .replace('{row}', rowIndex + 1);
+    
+        result.chosen.push({
+        row_index: rowIndex,
+        col_index: colIndex,
+        label_template: labelTemplate,
+        label: label
+        });
+    })
+
+    fetch('/api/seat-map/save', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(result)
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log('Save success', data);
+        alert('Seat map saved!');
+    })
+    .catch(err => {
+        console.error('Save failed', err);
+        alert('Failed to save seat map.');
+    });
+  }
+
   listen() {
-    document.body.addEventListener("contextmenu", (e)=>this.eventContextMenu(e));
     document.body.addEventListener('click', (e) => {
         const clickedInsidePopup = this.elConfigPopup.contains(e.target);
         const clickedConfigButton = this.elConfigButton.contains(e.target);
@@ -40,26 +84,11 @@ class MyMapConfig {
       
         const isConfigSubmit = e.target.classList.contains(this.configSubmit);
         if (isConfigSubmit) {
-          e.preventDefault();
-      
-          const name = this.elConfigPopup.querySelector('#config-name').value;
-          const labelTemplate = this.elConfigPopup.querySelector('#config-label-template').value;
-          const rowCount = parseInt(this.elConfigPopup.querySelector('#config-row-count').value) || 20;
-          const colCount = parseInt(this.elConfigPopup.querySelector('#config-col-count').value) || 30;
-      
-          console.log({ name, labelTemplate, rowCount, colCount });
-      
-          this.myMap.reDraw({
-            rowCount: rowCount,
-            colCount: colCount,
-            labelTemplate: labelTemplate || '{col}{row}',
-          });
-      
-          this.elConfigPopup.classList.remove('show');
+            e.preventDefault();
+            this.submit()
+            return          
         }
-      });
-      
-
+    });
   };
 }
 

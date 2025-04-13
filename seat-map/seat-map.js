@@ -95,6 +95,11 @@ class SeatMap {
         this.renderRowLabels(document.getElementById(this.rowLabelWrapperLeft), 1);
         this.renderRowLabels(document.getElementById(this.rowLabelWrapperRight), -1);
 
+
+    }
+
+    chosen() {
+      return document.getElementById(this.middleBlock).querySelectorAll('.seat-item.chosen')
     }
 
     removeAllSeat() {
@@ -167,11 +172,11 @@ class SeatMap {
           cols.forEach((letter, index) => {
             const seat = document.createElement("div");
             seat.className = "seat text-center seat-item empty";
-            seat.setAttribute("data-row-index", row);
             seat.setAttribute("data-col", letter);
-            seat.setAttribute("data-col-index", index);
             seat.setAttribute("data-row-name", row + 1);
             seat.setAttribute("data-col-name", letter);
+            seat.setAttribute("data-row-index", row);
+            seat.setAttribute("data-col-index", index);
             seat.setAttribute("data-label-template", this.labelTemplate);
             // seat.innerHTML = `<div class="seat-label">${letter}${row + 1}</div>`;
             // seat.innerHTML = `<div class="seat-label"></div>`;
