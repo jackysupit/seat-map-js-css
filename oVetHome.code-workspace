@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../odoo/18/core"
+		},
+		{
+			"path": "../hollywood-boulevard"
+		}
+	],
+	"settings": {
+		"python.languageServer": "None"
+	}
+}

@@ -1,0 +1,27 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../../odoo/18"
+		}
+	],
+	"settings": {
+		"workbench.colorCustomizations": {
+			"sideBar.background": "#222403",
+			"sideBar.foreground": "#ffffff"  // Optional
+		},
+		"files.exclude": {
+			"**/.git": true,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/CVS": true,
+			"**/.DS_Store": true,
+			"**/Thumbs.db": true,
+			"**/.ruby-lsp": true,
+			"**/__pycache__": true,
+			"**/node_modules": true
+		}
+	}	
+}
