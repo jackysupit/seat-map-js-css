@@ -12,8 +12,8 @@
             "program": "/home/jack/work/odoo/18/core/odoo-bin",
             "args": [
                 "--config=/home/jack/work/aiterra/oVetHome/apps/conf/odoo/jack_vet_home.conf",
-                "-i",
-                "base",
+                // "-i",
+                // "base",
                 // "--limit-time-real=99999",
                 // "--update=vc_custom_signup",
             ]
